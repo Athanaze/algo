@@ -13,5 +13,5 @@ https://codeforces.com/group/Q2IaskfBDO/contest/413672/problem/B
 # Motivational quote of the day
 
 ```
-git gud
+There are three kinds of mathematicians in this world. Those who can add up and those who can't.
 ```
