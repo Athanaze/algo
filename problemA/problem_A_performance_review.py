@@ -2,23 +2,14 @@ import time
 from random import randint
 
 import sys
-import ast
-import types
+from io import StringIO
 
-with open("problemA.py") as f:
-   p = ast.parse(f.read())
-
-for node in p.body[:]:
-    if not isinstance(node, ast.FunctionDef):
-        p.body.remove(node)
-
-module = types.ModuleType("mod")
-code = compile(p, "mod.py", 'exec')
-sys.modules["testedMod"] = module
-exec(code,  module.__dict__)
-
-import testedMod
-
+def runProblemA():
+	import problemA
+	try:
+		del sys.modules['problemA']
+	except AttributeError:
+		pass
 
 def generateRandomInputs():
 	n = 2000
@@ -36,14 +27,22 @@ def generateRandomInputs():
 			destination = randint(origin + 1, n)
 		food = randint(0, 1e9)
 		fuel = randint(0, 1e9)
-		postHitchhikers[origin].append([destination, food, fuel])
+		postHitchhikers[origin].append([str(destination), str(food), str(fuel)])
 
 	return (n, numberOfHitchhikers, initialFuel, postHitchhikers)
 
 def testProblemA():
 	inputs = generateRandomInputs()
+
+	stringInput = " ".join(map(str, inputs[:3]))
+	postHitchhikers = inputs[3]
+	for postId in range(len(postHitchhikers)):
+		for hitchhiker in postHitchhikers[postId]:
+			stringInput += "\n" + str(postId) + " " + " ".join(hitchhiker)
+	sys.stdin = StringIO(stringInput)
+
 	start = time.time()
-	testedMod.test(inputs[0], inputs[1], inputs[2], inputs[3])
+	runProblemA()
 	end = time.time()
 	totalTime = end - start
 	return totalTime
