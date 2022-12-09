@@ -62,9 +62,20 @@ class Tester:
 
 		return realResult == expectedResult, endTime - startTime, expectedResult, realResult
 
+	def displayResults(self, testId):
+		testInputFileName = self.testFolder + (str(testId) if testId >= 10 else "0" + str(testId))
+
+		with open(testInputFileName) as file:
+			strInput = file.read()
+
+		with StringIO(strInput) as inputs:
+			sys.stdin = inputs
+			importlib.import_module(self.testModuleName)
+			del sys.modules[self.testModuleName]
+
 tester = Tester("problem_a", "./tests/a/", 10, 2)
-tester.runAllTests()
+# tester.runAllTests()
+tester.displayResults(1)
 
-tester = Tester("problem_a", "./tests/b/", 11, 2.5)
-tester.runAllTests()
-
+# tester = Tester("problem_b", "./tests/b/", 11, 2.5)
+# tester.runAllTests()
